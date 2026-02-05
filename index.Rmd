@@ -3,42 +3,61 @@ title: "Aakriti's Animint Gallery"
 output: 
   html_document:
     self_contained: false
-    theme: cosmo
 ---
 
-## My Interactive Visualizations Portfolio
+<style>
+  .gallery-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+  }
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 300px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  .card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .card h4 { margin: 10px 0; color: #333; }
+  .card a { color: #007bff; text-decoration: none; font-weight: bold; }
+</style>
+
+## My Interactive Visualizations
+
+<div class="gallery-container">
 
 ```{r echo=FALSE, results='asis'}
-# Using your EXACT repo names from the screenshot
 repos <- c(
-  "ten-points-animint", 
-  "iris-animint-test", 
-  "worldbank-animint-test", 
-  "kmeans-animint-test", 
-  "mc-sample-mean-test", 
-  "buffon-needle-test", 
+  "ten-points-animint", "iris-animint-test", "worldbank-animint-test", 
+  "kmeans-animint-test", "mc-sample-mean-test", "buffon-needle-test", 
   "rosling-bubbles-test"
 )
 
-cat("| Screenshot | Project Title | Links |\n")
-cat("|:---:|:---|:---|\n")
-
 for(repo in repos){
   demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/")
-  code_url <- paste0("[https://github.com/aakritixyz/](https://github.com/aakritixyz/)", repo)
-  
-  # Absolute URL to the image on the main branch
+  # Forced the direct raw link we just verified
   img_url  <- paste0("[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)", repo, "/main/Capture.PNG")
   
-  # Image tag with fixed width and no 'onerror' to keep it simple for now
-  img_tag <- paste0("<a href='", demo_url, "'><img src='", img_url, "' width='250' style='border:1px solid #ddd; border-radius:8px;'></a>")
-  
-  # Clean up name: remove suffixes and capitalize
-  proj_name <- gsub("-animint|-test", "", repo)
-  proj_name <- tools::toTitleCase(gsub("-", " ", proj_name))
-  
-  links <- paste0("<strong>[View Demo](", demo_url, ")</strong><br>[Source Code](", code_url, ")")
-  
-  # Removed the '###' from inside the table cell as it messes up Markdown tables
-  cat(paste0("| ", img_tag, " | **", proj_name, "** | ", links, " |\n"))
+  name <- gsub("-animint|-test", "", repo)
+  name <- tools::toTitleCase(gsub("-", " ", name))
+
+  cat(paste0('
+  <div class="card">
+    <a href="', demo_url, '">
+      <img src="', img_url, '" alt="', name, '">
+    </a>
+    <h4>', name, '</h4>
+    <p><a href="', demo_url, '">Interactive Demo</a></p>
+    <p><a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)', repo, '" style="font-size: 0.8em; color: #666;">Source Code</a></p>
+  </div>
+  '))
 }
