@@ -7,27 +7,25 @@ output:
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(kableExtra)
-library(knitr)
 
 # 1. Read data
 dt <- read.csv('meta.csv')
 
-# 2. Build URLs using the JSDelivr CDN (More reliable than raw.githubusercontent)
-# Logic: [https://cdn.jsdelivr.net/gh/user/repo@branch/file](https://cdn.jsdelivr.net/gh/user/repo@branch/file)
-image_urls <- paste0("[https://cdn.jsdelivr.net/gh/](https://cdn.jsdelivr.net/gh/)", trimws(dt$viz_owner_repo), "@main/Capture.PNG")
+# 2. Build CLEAN HTML img tags
+# We use 'single quotes' for the HTML and 'double quotes' for R
+img_tags <- paste0("<img src='[https://cdn.jsdelivr.net/gh/](https://cdn.jsdelivr.net/gh/)", 
+                   trimws(dt$viz_owner_repo), 
+                   "@main/Capture.PNG' width='200'>")
 
-# 3. Build Demo links
-repo_only <- gsub(".*\\/", "", dt$viz_owner_repo)
-viz_links <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", trimws(repo_only), "/")
-
-# 4. Create display data frame with raw HTML
+# 3. Create the table data
 display_df <- data.frame(
-  Screenshot = paste0("<img src='", image_urls, "' width='200' style='border: 1px solid #ddd; border-radius: 4px; padding: 5px;'>"),
-  Project = paste0("<b>", dt$title, "</b>"),
-  Links = paste0("<a href='", viz_links, "' target='_blank'>Interactive Demo</a><br>",
-                 "<a href='", dt$source, "' target='_blank'>Source Code</a>")
+  Screenshot = img_tags,
+  Project = dt$title,
+  Links = paste0("<a href='[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", 
+                 gsub("aakritixyz/", "", dt$viz_owner_repo), 
+                 "/'>Demo</a>")
 )
 
-# 5. Render
+# 4. Render as HTML (escape = FALSE is the secret!)
 kable(display_df, format = "html", escape = FALSE) %>%
-  kable_styling(full_width = TRUE, bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(bootstrap_options = c("striped", "hover"))
