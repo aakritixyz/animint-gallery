@@ -9,28 +9,25 @@ output:
 library(kableExtra)
 library(knitr)
 
-# 1. Read the data
+# 1. Read data
 dt <- read.csv('meta.csv')
 
-# 2. Build the exact HTML image tag manually
-# This avoids the kableExtra 'image' argument which is causing the brackets
-image_tags <- paste0("<img src='[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)", 
-                     trimws(dt$viz_owner_repo), 
-                     "/main/Capture.PNG' width='200'>")
+# 2. Build URLs using the JSDelivr CDN (More reliable than raw.githubusercontent)
+# Logic: [https://cdn.jsdelivr.net/gh/user/repo@branch/file](https://cdn.jsdelivr.net/gh/user/repo@branch/file)
+image_urls <- paste0("[https://cdn.jsdelivr.net/gh/](https://cdn.jsdelivr.net/gh/)", trimws(dt$viz_owner_repo), "@main/Capture.PNG")
 
-# 3. Build Demo and Repo links
+# 3. Build Demo links
 repo_only <- gsub(".*\\/", "", dt$viz_owner_repo)
 viz_links <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", trimws(repo_only), "/")
 
-# 4. Create the display data frame
+# 4. Create display data frame with raw HTML
 display_df <- data.frame(
-  Screenshot = image_tags,
+  Screenshot = paste0("<img src='", image_urls, "' width='200' style='border: 1px solid #ddd; border-radius: 4px; padding: 5px;'>"),
   Project = paste0("<b>", dt$title, "</b>"),
-  Links = paste0("<a href='", viz_links, "'>Interactive Demo</a><br>",
-                  "<a href='", dt$source, "'>Source Code</a>")
+  Links = paste0("<a href='", viz_links, "' target='_blank'>Interactive Demo</a><br>",
+                 "<a href='", dt$source, "' target='_blank'>Source Code</a>")
 )
 
-# 5. Generate the table
-# Note: escape = FALSE is the key here to let the <img> tags work
+# 5. Render
 kable(display_df, format = "html", escape = FALSE) %>%
-  kable_styling(full_width = TRUE, bootstrap_options = c("striped", "hover"))
+  kable_styling(full_width = TRUE, bootstrap_options = c("striped", "hover", "condensed"))
