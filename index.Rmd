@@ -3,16 +3,8 @@ title: "Aakriti's Animint Gallery"
 output: html_document
 ---
 
-<style>
-  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-  th { background-color: #f2f2f2; }
-  td, th { padding: 12px; border: 1px solid #ddd; text-align: center; }
-  img { border-radius: 8px; }
-</style>
-
-## My Interactive Visualizations Portfolio
-
 ```{r echo=FALSE, results='asis'}
+# --- CONFIGURATION ---
 user <- "aakritixyz"
 repos <- c(
   "ten-points-animint", "iris-animint-test", "worldbank-animint-test", 
@@ -20,24 +12,30 @@ repos <- c(
   "rosling-bubbles-test"
 )
 
-cat("<table><thead><tr><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>")
+# --- THE AUTOMATED LOOP ---
+cat('<table style="width:100%; border-collapse: collapse;">')
+cat('<thead><tr style="background-color: #eee;"><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>')
 
 for(repo in repos){
-  # We break the 'https' string so Pandoc doesn't 'help' us with brackets
-  base_url <- "https&#58;//" 
-  img  <- paste0(base_url, "[raw.githubusercontent.com/](https://raw.githubusercontent.com/)", user, "/", repo, "/main/Capture.PNG")
-  demo <- paste0(base_url, user, ".github.io/", repo, "/")
-  code <- paste0(base_url, "[github.com/](https://github.com/)", user, "/", repo)
+  # We split the "https" part to trick the Pandoc parser into not adding brackets
+  protocol <- "https"
+  colon_slashes <- "://"
+  
+  img  <- paste0(protocol, colon_slashes, "[raw.githubusercontent.com/](https://raw.githubusercontent.com/)", user, "/", repo, "/main/Capture.PNG")
+  demo <- paste0(protocol, colon_slashes, user, ".github.io/", repo, "/")
+  code <- paste0(protocol, colon_slashes, "[github.com/](https://github.com/)", user, "/", repo)
+  
   name <- toupper(gsub("-animint|-test", "", repo))
 
+  # Build the row as a single string
   row <- paste0(
     "<tr>",
-    "<td><img src='", img, "' width='200'></td>",
-    "<td><b>", name, "</b></td>",
-    "<td><a href='", demo, "'>Demo</a><br><a href='", code, "'>Source</a></td>",
+    "<td style='padding:10px; border:1px solid #ddd;'><img src='", img, "' width='200'></td>",
+    "<td style='padding:10px; border:1px solid #ddd;'><b>", name, "</b></td>",
+    "<td style='padding:10px; border:1px solid #ddd;'><a href='", demo, "'>View Demo</a><br><a href='", code, "'>Source Code</a></td>",
     "</tr>"
   )
   cat(row)
 }
 
-cat("</tbody></table>")
+cat('</tbody></table>')
