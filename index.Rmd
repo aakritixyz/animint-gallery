@@ -1,0 +1,47 @@
+---
+title: "Aakriti's Animint Gallery"
+output: 
+  html_document:
+    self_contained: false
+    theme: cosmo
+---
+
+## Interactive Visualizations Portfolio
+
+This gallery showcases various data visualizations ported using the `animint2` package.
+
+```{r echo=FALSE, results='asis'}
+# Your specific GitHub repo names
+repos <- c(
+  "ten-points-animint", 
+  "iris-animint-test", 
+  "worldbank-animint-test", 
+  "kmeans-animint-test", 
+  "mc-sample-mean-test", 
+  "buffon-needle-test", 
+  "rosling-bubbles-test"
+)
+
+cat("| Screenshot | Project Title | Links |\n")
+cat("|:---:|:---|:---|\n")
+
+for(repo in repos){
+  # Construction of URLs
+  demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/")
+  code_url <- paste0("[https://github.com/aakritixyz/](https://github.com/aakritixyz/)", repo)
+  
+  # Image URL (pointing to main branch where your Capture.PNG lives)
+  img_url  <- paste0("[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)", repo, "/main/Capture.PNG")
+  
+  # Image tag with fallback for lowercase 'capture.png'
+  img_tag <- paste0("<a href='", demo_url, "'><img src='", img_url, "' width='250' onerror=\"this.src='[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)", repo, "/main/capture.png'\" style='border:1px solid #ddd; border-radius:8px; padding:5px;' alt='Visualization Screenshot'></a>")
+  
+  # Formatting the Project Title (removing suffixes for a cleaner look)
+  proj_name <- gsub("-animint|-test", "", repo)
+  proj_name <- tools::toTitleCase(gsub("-", " ", proj_name))
+  
+  # Link formatting
+  links <- paste0("<strong>[View Interactive Demo](", demo_url, ")</strong><br>[Source Code (GitHub)](", code_url, ")")
+  
+  cat(paste0("| ", img_tag, " | ### ", proj_name, " | ", links, " |\n"))
+}
