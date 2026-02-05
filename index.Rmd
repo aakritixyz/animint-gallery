@@ -3,14 +3,37 @@ title: "Aakriti's Animint Gallery"
 output: html_document
 ---
 
-## My Interactive Visualizations
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(kableExtra)
+library(knitr)
 
-| Screenshot | Project | Links |
-|:---:|:---|:---|
-| <img src="https://raw.githubusercontent.com/aakritixyz/ten-points-animint/main/Capture.PNG" width="200"> | **TEN POINTS** | [Demo](https://aakritixyz.github.io/ten-points-animint/) <br> [Source](https://github.com/aakritixyz/ten-points-animint) |
-| <img src="https://raw.githubusercontent.com/aakritixyz/iris-animint-test/main/Capture.PNG" width="200"> | **IRIS** | [Demo](https://aakritixyz.github.io/iris-animint-test/) <br> [Source](https://github.com/aakritixyz/iris-animint-test) |
-| <img src="https://raw.githubusercontent.com/aakritixyz/worldbank-animint-test/main/Capture.PNG" width="200"> | **WORLDBANK** | [Demo](https://aakritixyz.github.io/worldbank-animint-test/) <br> [Source](https://github.com/aakritixyz/worldbank-animint-test) |
-| <img src="https://raw.githubusercontent.com/aakritixyz/kmeans-animint-test/main/Capture.PNG" width="200"> | **KMEANS** | [Demo](https://aakritixyz.github.io/kmeans-animint-test/) <br> [Source](https://github.com/aakritixyz/kmeans-animint-test) |
-| <img src="https://raw.githubusercontent.com/aakritixyz/mc-sample-mean-test/main/Capture.PNG" width="200"> | **MC SAMPLE MEAN** | [Demo](https://aakritixyz.github.io/mc-sample-mean-test/) <br> [Source](https://github.com/aakritixyz/mc-sample-mean-test) |
-| <img src="https://raw.githubusercontent.com/aakritixyz/buffon-needle-test/main/Capture.PNG" width="200"> | **BUFFON NEEDLE** | [Demo](https://aakritixyz.github.io/buffon-needle-test/) <br> [Source](https://github.com/aakritixyz/buffon-needle-test) |
-| <img src="https://raw.githubusercontent.com/aakritixyz/rosling-bubbles-test/main/Capture.PNG" width="200"> | **ROSLING BUBBLES** | [Demo](https://aakritixyz.github.io/rosling-bubbles-test/) <br> [Source](https://github.com/aakritixyz/rosling-bubbles-test) |
+# 1. Setup Data
+user <- "aakritixyz"
+repos <- c(
+  "ten-points-animint", "iris-animint-test", "worldbank-animint-test", 
+  "kmeans-animint-test", "mc-sample-mean-test", "buffon-needle-test", 
+  "rosling-bubbles-test"
+)
+
+# 2. Build Links manually to avoid sprintf errors
+# Image URLs (Using your 'main' branch)
+image_links <- paste0("[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)", user, "/", repos, "/main/Capture.PNG")
+
+# Demo URLs
+viz_links <- paste0("https://", user, ".github.io/", repos, "/")
+
+# Repo URLs
+repo_links <- paste0("[https://github.com/](https://github.com/)", user, "/", repos)
+
+# 3. Create the Data Frame
+df <- data.frame(
+  Screenshot = "",
+  Project = repos,
+  Links = paste0("<a href='", viz_links, "'>Interactive Demo</a><br>",
+                 "<a href='", repo_links, "'>Source Code</a>")
+)
+
+# 4. Generate the table using the Suhaani method
+kable(df, format = "html", escape = FALSE) %>%
+  kable_styling(full_width = TRUE, bootstrap_options = c("striped", "hover", "condensed")) %>%
+  column_spec(1, image = image_links)
