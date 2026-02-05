@@ -1,73 +1,31 @@
 ---
 title: "Aakriti's Animint Gallery"
-output: 
-  html_document:
-    self_contained: false
+output: html_document
 ---
 
-<style>
-  .gallery-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 20px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-  .card {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    width: 300px;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transition: transform 0.2s;
-  }
-  .card:hover { transform: translateY(-5px); }
-  .card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #eee;
-  }
-  .card h4 { margin: 15px 0 10px; color: #333; }
-  .card .btn {
-    display: inline-block;
-    background: #007bff;
-    color: white !important;
-    padding: 8px 16px;
-    border-radius: 5px;
-    text-decoration: none;
-    margin-bottom: 8px;
-  }
-</style>
-
-## My Interactive Visualizations
-
-<div class="gallery-container">
+## My Interactive Visualizations Portfolio
 
 ```{r echo=FALSE, results='asis'}
+user <- "aakritixyz"
 repos <- c(
   "ten-points-animint", "iris-animint-test", "worldbank-animint-test", 
   "kmeans-animint-test", "mc-sample-mean-test", "buffon-needle-test", 
   "rosling-bubbles-test"
 )
 
-for(repo in repos){
-  # Define clean URLs
-  demo_link <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/")
-  code_link <- paste0("[https://github.com/aakritixyz/](https://github.com/aakritixyz/)", repo)
-  img_link  <- paste0("[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)", repo, "/main/Capture.PNG")
-  
-  # Clean Title
-  display_name <- tools::toTitleCase(gsub("-", " ", gsub("-animint|-test", "", repo)))
+cat("| Screenshot | Project Title | Links |\n")
+cat("|:---:|:---|:---|\n")
 
-  # Output HTML
-  cat('<div class="card">')
-  cat(paste0('<a href="', demo_link, '"><img src="', img_link, '" alt="', display_name, '"></a>'))
-  cat(paste0('<h4>', display_name, '</h4>'))
-  cat(paste0('<a href="', demo_link, '" class="btn">View Interactive Demo</a><br>'))
-  cat(paste0('<a href="', code_link, '" style="font-size: 0.8em; color: #666;">View Source Code</a>'))
-  cat('</div>')
+for(repo in repos){
+  # Building the strings carefully
+  img_url  <- paste0("[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)", user, "/", repo, "/main/Capture.PNG")
+  demo_url <- paste0("https://", user, ".github.io/", repo, "/")
+  code_url <- paste0("[https://github.com/](https://github.com/)", user, "/", repo)
+  
+  # Formatting name
+  name <- gsub("-animint|-test", "", repo)
+  name <- toupper(name)
+
+  # Writing the row
+  cat(paste0("| <img src='", img_url, "' width='250'> | **", name, "** | [Demo](", demo_url, ") <br> [Source](", code_url, ") |\n"))
 }
