@@ -12,24 +12,25 @@ library(knitr)
 # 1. Read the data
 dt <- read.csv('meta.csv')
 
-# 2. Build the exact links - FIXED SYNTAX HERE
-image_links <- paste0("[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)", trimws(dt$viz_owner_repo), "/main/Capture.PNG")
+# 2. Build the exact HTML image tag manually
+# This avoids the kableExtra 'image' argument which is causing the brackets
+image_tags <- paste0("<img src='[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)", 
+                     trimws(dt$viz_owner_repo), 
+                     "/main/Capture.PNG' width='200'>")
 
-creator_info <- strsplit(trimws(dt$viz_owner_repo), split="/")
-CreatorName <- sapply(creator_info, `[`, 1)
-RepoName <- sapply(creator_info, `[`, 2)
+# 3. Build Demo and Repo links
+repo_only <- gsub(".*\\/", "", dt$viz_owner_repo)
+viz_links <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", trimws(repo_only), "/")
 
-viz_links <- paste0("https://", CreatorName, ".github.io/", RepoName, "/")
-
-# 3. Create the display data frame
+# 4. Create the display data frame
 display_df <- data.frame(
-  Screenshot = "",
+  Screenshot = image_tags,
   Project = paste0("<b>", dt$title, "</b>"),
   Links = paste0("<a href='", viz_links, "'>Interactive Demo</a><br>",
                   "<a href='", dt$source, "'>Source Code</a>")
 )
 
-# 4. Generate the table
+# 5. Generate the table
+# Note: escape = FALSE is the key here to let the <img> tags work
 kable(display_df, format = "html", escape = FALSE) %>%
-  kable_styling(full_width = TRUE, bootstrap_options = c("striped", "hover")) %>%
-  column_spec(1, image = image_links)
+  kable_styling(full_width = TRUE, bootstrap_options = c("striped", "hover"))
