@@ -12,6 +12,7 @@ output:
     gap: 20px;
     justify-content: center;
     padding: 20px;
+    font-family: sans-serif;
   }
   .card {
     border: 1px solid #ddd;
@@ -22,12 +23,11 @@ output:
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   }
   .card img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
     border-radius: 4px;
-    margin-bottom: 10px;
   }
-  .card h4 { margin: 10px 0; color: #333; }
+  .card h4 { margin: 10px 0; }
   .card a { color: #007bff; text-decoration: none; font-weight: bold; }
 </style>
 
@@ -36,6 +36,7 @@ output:
 <div class="gallery-container">
 
 ```{r echo=FALSE, results='asis'}
+# List of your specific repositories
 repos <- c(
   "ten-points-animint", "iris-animint-test", "worldbank-animint-test", 
   "kmeans-animint-test", "mc-sample-mean-test", "buffon-needle-test", 
@@ -44,20 +45,18 @@ repos <- c(
 
 for(repo in repos){
   demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/")
-  # Forced the direct raw link we just verified
   img_url  <- paste0("[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)", repo, "/main/Capture.PNG")
   
   name <- gsub("-animint|-test", "", repo)
   name <- tools::toTitleCase(gsub("-", " ", name))
 
-  cat(paste0('
-  <div class="card">
-    <a href="', demo_url, '">
-      <img src="', img_url, '" alt="', name, '">
-    </a>
-    <h4>', name, '</h4>
-    <p><a href="', demo_url, '">Interactive Demo</a></p>
-    <p><a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)', repo, '" style="font-size: 0.8em; color: #666;">Source Code</a></p>
-  </div>
-  '))
+  # We use 'cat' to output raw HTML directly to the page
+  cat('<div class="card">')
+  cat(paste0('<a href="', demo_url, '"><img src="', img_url, '" alt="', name, '"></a>'))
+  cat(paste0('<h4>', name, '</h4>'))
+  cat(paste0('<p><a href="', demo_url, '">Interactive Demo</a></p>'))
+  cat(paste0('<p><a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)', repo, '" style="font-size: 0.8em; color: #666;">Source Code</a></p>'))
+  cat('</div>')
 }
+
+</div>
