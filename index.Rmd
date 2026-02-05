@@ -1,15 +1,13 @@
 ---
 title: "Aakriti's Animint Gallery"
-output: 
-  html_document:
-    self_contained: true
-    pandoc_args: ["--lua-filter", "disable-autolinks.lua"]
+output: html_document
 ---
 
 <style>
-  table { width: 100%; border-collapse: collapse; }
-  th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
-  img { border-radius: 5px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  th { background-color: #f2f2f2; }
+  td, th { padding: 12px; border: 1px solid #ddd; text-align: center; }
+  img { border-radius: 8px; }
 </style>
 
 ## My Interactive Visualizations Portfolio
@@ -22,14 +20,14 @@ repos <- c(
   "rosling-bubbles-test"
 )
 
-# We are going to build the table as one giant string to prevent 
-# R from breaking it up and Pandoc from seeing the URLs individually.
-table_html <- "<table><thead><tr><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>"
+cat("<table><thead><tr><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>")
 
 for(repo in repos){
-  img  <- paste0("[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)", user, "/", repo, "/main/Capture.PNG")
-  demo <- paste0("https://", user, ".github.io/", repo, "/")
-  code <- paste0("[https://github.com/](https://github.com/)", user, "/", repo)
+  # We break the 'https' string so Pandoc doesn't 'help' us with brackets
+  base_url <- "https&#58;//" 
+  img  <- paste0(base_url, "[raw.githubusercontent.com/](https://raw.githubusercontent.com/)", user, "/", repo, "/main/Capture.PNG")
+  demo <- paste0(base_url, user, ".github.io/", repo, "/")
+  code <- paste0(base_url, "[github.com/](https://github.com/)", user, "/", repo)
   name <- toupper(gsub("-animint|-test", "", repo))
 
   row <- paste0(
@@ -39,10 +37,7 @@ for(repo in repos){
     "<td><a href='", demo, "'>Demo</a><br><a href='", code, "'>Source</a></td>",
     "</tr>"
   )
-  table_html <- paste0(table_html, row)
+  cat(row)
 }
 
-table_html <- paste0(table_html, "</tbody></table>")
-
-# This is the magic part: knitr::asis_output protects the string
-knitr::asis_output(table_html)
+cat("</tbody></table>")
