@@ -6,6 +6,7 @@ output: html_document
 ## My Interactive Visualizations Portfolio
 
 ```{r echo=FALSE, results='asis'}
+# No libraries needed for this method
 user <- "aakritixyz"
 repos <- c(
   "ten-points-animint", "iris-animint-test", "worldbank-animint-test", 
@@ -13,24 +14,28 @@ repos <- c(
   "rosling-bubbles-test"
 )
 
-cat("<table>\n<thead>\n<tr><th>Screenshot</th><th>Project Title</th><th>Links</th></tr>\n</thead>\n<tbody>\n")
+# Start Table
+cat('<table><thead><tr><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>')
 
 for(repo in repos){
-  img_url  <- paste0("[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)", user, "/", repo, "/main/Capture.PNG")
-  demo_url <- paste0("https://", user, ".github.io/", repo, "/")
-  code_url <- paste0("[https://github.com/](https://github.com/)", user, "/", repo)
+  img  <- paste0("[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)", user, "/", repo, "/main/Capture.PNG")
+  demo <- paste0("https://", user, ".github.io/", repo, "/")
+  code <- paste0("[https://github.com/](https://github.com/)", user, "/", repo)
   
-  clean_name <- toupper(gsub("-animint|-test", "", repo))
+  name <- toupper(gsub("-animint|-test", "", repo))
 
-  # We use pure HTML tags here to bypass Markdown processing
-  row <- paste0(
+  # We use single quotes for the HTML attributes to avoid conflict
+  # and NO spaces between the tags and the URLs
+  row_html <- paste0(
     "<tr>",
-    "<td><img src='", img_url, "' width='200'></td>",
-    "<td><b>", clean_name, "</b></td>",
-    "<td><a href='", demo_url, "'>Demo</a><br><a href='", code_url, "'>Source</a></td>",
+    "<td><img src='", img, "' width='200'></td>",
+    "<td><b>", name, "</b></td>",
+    "<td><a href='", demo, "'>Demo</a><br><a href='", code, "'>Source</a></td>",
     "</tr>"
   )
-  cat(row, "\n")
+  
+  # The 'cat' function with 'sep' ensures no extra formatting is added
+  cat(row_html, sep="")
 }
 
-cat("</tbody>\n</table>")
+cat('</tbody></table>')
