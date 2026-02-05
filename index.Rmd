@@ -12,23 +12,35 @@ output:
     gap: 20px;
     justify-content: center;
     padding: 20px;
-    font-family: sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
   .card {
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 12px;
     width: 300px;
     padding: 15px;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
   }
+  .card:hover { transform: translateY(-5px); }
   .card img {
     width: 100%;
-    height: auto;
-    border-radius: 4px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #eee;
   }
-  .card h4 { margin: 10px 0; }
-  .card a { color: #007bff; text-decoration: none; font-weight: bold; }
+  .card h4 { margin: 15px 0 10px; color: #333; }
+  .card .btn {
+    display: inline-block;
+    background: #007bff;
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-bottom: 8px;
+  }
 </style>
 
 ## My Interactive Visualizations
@@ -36,7 +48,6 @@ output:
 <div class="gallery-container">
 
 ```{r echo=FALSE, results='asis'}
-# List of your specific repositories
 repos <- c(
   "ten-points-animint", "iris-animint-test", "worldbank-animint-test", 
   "kmeans-animint-test", "mc-sample-mean-test", "buffon-needle-test", 
@@ -44,19 +55,19 @@ repos <- c(
 )
 
 for(repo in repos){
-  demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/")
-  img_url  <- paste0("[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)", repo, "/main/Capture.PNG")
+  # Define clean URLs
+  demo_link <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/")
+  code_link <- paste0("[https://github.com/aakritixyz/](https://github.com/aakritixyz/)", repo)
+  img_link  <- paste0("[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)", repo, "/main/Capture.PNG")
   
-  name <- gsub("-animint|-test", "", repo)
-  name <- tools::toTitleCase(gsub("-", " ", name))
+  # Clean Title
+  display_name <- tools::toTitleCase(gsub("-", " ", gsub("-animint|-test", "", repo)))
 
-  # We use 'cat' to output raw HTML directly to the page
+  # Output HTML
   cat('<div class="card">')
-  cat(paste0('<a href="', demo_url, '"><img src="', img_url, '" alt="', name, '"></a>'))
-  cat(paste0('<h4>', name, '</h4>'))
-  cat(paste0('<p><a href="', demo_url, '">Interactive Demo</a></p>'))
-  cat(paste0('<p><a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)', repo, '" style="font-size: 0.8em; color: #666;">Source Code</a></p>'))
+  cat(paste0('<a href="', demo_link, '"><img src="', img_link, '" alt="', display_name, '"></a>'))
+  cat(paste0('<h4>', display_name, '</h4>'))
+  cat(paste0('<a href="', demo_link, '" class="btn">View Interactive Demo</a><br>'))
+  cat(paste0('<a href="', code_link, '" style="font-size: 0.8em; color: #666;">View Source Code</a>'))
   cat('</div>')
 }
-
-</div>

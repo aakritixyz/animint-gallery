@@ -172,23 +172,35 @@ pre code {
     gap: 20px;
     justify-content: center;
     padding: 20px;
-    font-family: sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
   .card {
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 12px;
     width: 300px;
     padding: 15px;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
   }
+  .card:hover { transform: translateY(-5px); }
   .card img {
     width: 100%;
-    height: auto;
-    border-radius: 4px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #eee;
   }
-  .card h4 { margin: 10px 0; }
-  .card a { color: #007bff; text-decoration: none; font-weight: bold; }
+  .card h4 { margin: 15px 0 10px; color: #333; }
+  .card .btn {
+    display: inline-block;
+    background: #007bff;
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-bottom: 8px;
+  }
 </style>
 <div id="my-interactive-visualizations" class="section level2">
 <h2>My Interactive Visualizations</h2>
@@ -198,98 +210,70 @@ pre code {
 <h4>
 Ten Points
 </h4>
-<p>
-<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)ten-points-animint/">Interactive
-Demo</a>
-</p>
-<p>
-<a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)ten-points-animint" style="font-size: 0.8em; color: #666;">Source
-Code</a>
-</p>
+<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)ten-points-animint/" class="btn">View
+Interactive
+Demo</a><br><a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)ten-points-animint" style="font-size: 0.8em; color: #666;">View
+Source Code</a>
 </div>
 <div class="card">
 <a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)iris-animint-test/"><img src="[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)iris-animint-test/main/Capture.PNG" alt="Iris"></a>
 <h4>
 Iris
 </h4>
-<p>
-<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)iris-animint-test/">Interactive
-Demo</a>
-</p>
-<p>
-<a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)iris-animint-test" style="font-size: 0.8em; color: #666;">Source
-Code</a>
-</p>
+<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)iris-animint-test/" class="btn">View
+Interactive
+Demo</a><br><a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)iris-animint-test" style="font-size: 0.8em; color: #666;">View
+Source Code</a>
 </div>
 <div class="card">
 <a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)worldbank-animint-test/"><img src="[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)worldbank-animint-test/main/Capture.PNG" alt="Worldbank"></a>
 <h4>
 Worldbank
 </h4>
-<p>
-<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)worldbank-animint-test/">Interactive
-Demo</a>
-</p>
-<p>
-<a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)worldbank-animint-test" style="font-size: 0.8em; color: #666;">Source
-Code</a>
-</p>
+<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)worldbank-animint-test/" class="btn">View
+Interactive
+Demo</a><br><a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)worldbank-animint-test" style="font-size: 0.8em; color: #666;">View
+Source Code</a>
 </div>
 <div class="card">
 <a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)kmeans-animint-test/"><img src="[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)kmeans-animint-test/main/Capture.PNG" alt="Kmeans"></a>
 <h4>
 Kmeans
 </h4>
-<p>
-<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)kmeans-animint-test/">Interactive
-Demo</a>
-</p>
-<p>
-<a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)kmeans-animint-test" style="font-size: 0.8em; color: #666;">Source
-Code</a>
-</p>
+<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)kmeans-animint-test/" class="btn">View
+Interactive
+Demo</a><br><a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)kmeans-animint-test" style="font-size: 0.8em; color: #666;">View
+Source Code</a>
 </div>
 <div class="card">
 <a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)mc-sample-mean-test/"><img src="[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)mc-sample-mean-test/main/Capture.PNG" alt="Mc Sample Mean"></a>
 <h4>
 Mc Sample Mean
 </h4>
-<p>
-<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)mc-sample-mean-test/">Interactive
-Demo</a>
-</p>
-<p>
-<a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)mc-sample-mean-test" style="font-size: 0.8em; color: #666;">Source
-Code</a>
-</p>
+<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)mc-sample-mean-test/" class="btn">View
+Interactive
+Demo</a><br><a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)mc-sample-mean-test" style="font-size: 0.8em; color: #666;">View
+Source Code</a>
 </div>
 <div class="card">
 <a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)buffon-needle-test/"><img src="[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)buffon-needle-test/main/Capture.PNG" alt="Buffon Needle"></a>
 <h4>
 Buffon Needle
 </h4>
-<p>
-<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)buffon-needle-test/">Interactive
-Demo</a>
-</p>
-<p>
-<a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)buffon-needle-test" style="font-size: 0.8em; color: #666;">Source
-Code</a>
-</p>
+<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)buffon-needle-test/" class="btn">View
+Interactive
+Demo</a><br><a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)buffon-needle-test" style="font-size: 0.8em; color: #666;">View
+Source Code</a>
 </div>
 <div class="card">
 <a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)rosling-bubbles-test/"><img src="[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)rosling-bubbles-test/main/Capture.PNG" alt="Rosling Bubbles"></a>
 <h4>
 Rosling Bubbles
 </h4>
-<p>
-<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)rosling-bubbles-test/">Interactive
-Demo</a>
-</p>
-<p>
-<a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)rosling-bubbles-test" style="font-size: 0.8em; color: #666;">Source
-Code</a>
-</p>
+<a href="[https://aakritixyz.github.io/](https://aakritixyz.github.io/)rosling-bubbles-test/" class="btn">View
+Interactive
+Demo</a><br><a href="[https://github.com/aakritixyz/](https://github.com/aakritixyz/)rosling-bubbles-test" style="font-size: 0.8em; color: #666;">View
+Source Code</a>
 </div>
 </div>
 </div>
