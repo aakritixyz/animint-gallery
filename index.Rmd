@@ -3,31 +3,28 @@ title: "Aakriti's Animint Gallery"
 output: 
   html_document:
     self_contained: false
+    pandoc_args: ["--no-highlight"]
 ---
 
 ```{r, echo=FALSE, results='asis'}
 # 1. Read the data
 dt <- read.csv('meta.csv', stringsAsFactors = FALSE)
 
-# 2. Start building the HTML table manually
-cat('<table class="table table-striped table-hover">')
-cat('<tr><th>Screenshot</th><th>Project</th><th>Links</th></tr>')
+cat('<table class="table">')
+cat('<thead><tr><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>')
 
-# 3. Loop through each row and write the HTML directly
 for(i in 1:nrow(dt)){
-  # Build the image path
+  # We use htmltools to ensure the string is treated as RAW HTML
   img_url <- paste0("[https://cdn.jsdelivr.net/gh/](https://cdn.jsdelivr.net/gh/)", trimws(dt$viz_owner_repo[i]), "@main/Capture.PNG")
-  
-  # Build the demo path
   repo_name <- gsub("aakritixyz/", "", dt$viz_owner_repo[i])
   demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo_name, "/")
   
-  # Print the row
   cat('<tr>')
-  cat(paste0('<td><img src="', img_url, '" width="250"></td>'))
+  # The 'raw' HTML tags here are key
+  cat(paste0('<td><img src="', img_url, '" width="250" style="display:block;"></td>'))
   cat(paste0('<td><b>', dt$title[i], '</b></td>'))
-  cat(paste0('<td><a href="', demo_url, '">Interactive Demo</a><br><a href="', dt$source[i], '">Source Code</a></td>'))
+  cat(paste0('<td><a href="', demo_url, '">Demo</a> | <a href="', dt$source[i], '">Source</a></td>'))
   cat('</tr>')
 }
 
-cat('</table>')
+cat('</tbody></table>')
