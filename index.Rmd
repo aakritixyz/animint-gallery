@@ -17,15 +17,18 @@ cat("| Screenshot | Project Title | Links |\n")
 cat("|:---:|:---|:---|\n")
 
 for(repo in repos){
-  # Building the strings carefully
+  # 1. IMAGE: Must be the RAW link
   img_url  <- paste0("[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)", user, "/", repo, "/main/Capture.PNG")
+  
+  # 2. DEMO: Your gh-pages site
   demo_url <- paste0("https://", user, ".github.io/", repo, "/")
+  
+  # 3. REPO: The main project page
   code_url <- paste0("[https://github.com/](https://github.com/)", user, "/", repo)
   
-  # Formatting name
-  name <- gsub("-animint|-test", "", repo)
-  name <- toupper(name)
+  # Formatting name for display
+  clean_name <- toupper(gsub("-animint|-test", "", repo))
 
-  # Writing the row
-  cat(paste0("| <img src='", img_url, "' width='250'> | **", name, "** | [Demo](", demo_url, ") <br> [Source](", code_url, ") |\n"))
+  # Write the row - Ensure quotes are around the img src
+  cat(paste0("| <img src='", img_url, "' width='200' alt='Screenshot'> | **", clean_name, "** | [Interactive Demo](", demo_url, ") <br> [Source Code](", code_url, ") |\n"))
 }
