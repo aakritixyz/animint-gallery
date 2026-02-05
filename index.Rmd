@@ -13,17 +13,24 @@ repos <- c(
   "rosling-bubbles-test"
 )
 
-cat("| Screenshot | Project Title | Links |\n")
-cat("|:---:|:---|:---|\n")
+cat("<table>\n<thead>\n<tr><th>Screenshot</th><th>Project Title</th><th>Links</th></tr>\n</thead>\n<tbody>\n")
 
 for(repo in repos){
-  # Use direct strings WITHOUT brackets
   img_url  <- paste0("[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)", user, "/", repo, "/main/Capture.PNG")
   demo_url <- paste0("https://", user, ".github.io/", repo, "/")
   code_url <- paste0("[https://github.com/](https://github.com/)", user, "/", repo)
   
   clean_name <- toupper(gsub("-animint|-test", "", repo))
 
-  # Build the row
-  cat(paste("| <img src='", img_url, "' width='200' alt='Screenshot'> | **", clean_name, "** | [Interactive Demo](", demo_url, ") <br> [Source Code](", code_url, ") |\n", sep=""))
+  # We use pure HTML tags here to bypass Markdown processing
+  row <- paste0(
+    "<tr>",
+    "<td><img src='", img_url, "' width='200'></td>",
+    "<td><b>", clean_name, "</b></td>",
+    "<td><a href='", demo_url, "'>Demo</a><br><a href='", code_url, "'>Source</a></td>",
+    "</tr>"
+  )
+  cat(row, "\n")
 }
+
+cat("</tbody>\n</table>")
