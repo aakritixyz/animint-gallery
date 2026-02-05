@@ -12,10 +12,10 @@ library(knitr)
 # 1. Read the data
 dt <- read.csv('meta.csv')
 
-# 2. Build the exact links
-image_links <- paste0("[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)", dt$viz_owner_repo, "/main/Capture.PNG")
+# 2. Build the exact links - FIXED SYNTAX HERE
+image_links <- paste0("[https://raw.githubusercontent.com/](https://raw.githubusercontent.com/)", trimws(dt$viz_owner_repo), "/main/Capture.PNG")
 
-creator_info <- strsplit(dt$viz_owner_repo, split="/")
+creator_info <- strsplit(trimws(dt$viz_owner_repo), split="/")
 CreatorName <- sapply(creator_info, `[`, 1)
 RepoName <- sapply(creator_info, `[`, 2)
 
@@ -26,7 +26,7 @@ display_df <- data.frame(
   Screenshot = "",
   Project = paste0("<b>", dt$title, "</b>"),
   Links = paste0("<a href='", viz_links, "'>Interactive Demo</a><br>",
-                 "<a href='", dt$source, "'>Source Code</a>")
+                  "<a href='", dt$source, "'>Source Code</a>")
 )
 
 # 4. Generate the table
