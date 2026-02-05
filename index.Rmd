@@ -3,28 +3,34 @@ title: "Aakriti's Animint Gallery"
 output: 
   html_document:
     self_contained: false
-    pandoc_args: ["--no-highlight"]
 ---
 
 ```{r, echo=FALSE, results='asis'}
-# 1. Read the data
+# 1. Read data
 dt <- read.csv('meta.csv', stringsAsFactors = FALSE)
 
-cat('<table class="table">')
-cat('<thead><tr><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>')
+# 2. Write Table Header
+cat('<table style="width:100%; border-collapse: collapse;">')
+cat('<tr style="background-color: #f2f2f2;"><th>Screenshot</th><th>Project</th><th>Links</th></tr>')
 
+# 3. The Loop
 for(i in 1:nrow(dt)){
-  # We use htmltools to ensure the string is treated as RAW HTML
+  # Build Image URL (JSDelivr is safest)
   img_url <- paste0("[https://cdn.jsdelivr.net/gh/](https://cdn.jsdelivr.net/gh/)", trimws(dt$viz_owner_repo[i]), "@main/Capture.PNG")
-  repo_name <- gsub("aakritixyz/", "", dt$viz_owner_repo[i])
-  demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo_name, "/")
   
-  cat('<tr>')
-  # The 'raw' HTML tags here are key
-  cat(paste0('<td><img src="', img_url, '" width="250" style="display:block;"></td>'))
-  cat(paste0('<td><b>', dt$title[i], '</b></td>'))
-  cat(paste0('<td><a href="', demo_url, '">Demo</a> | <a href="', dt$source[i], '">Source</a></td>'))
+  # Build Demo URL - FIXED TO AVOID 404
+  # This takes 'aakritixyz/repo-name' and makes it '[https://aakritixyz.github.io/repo-name/](https://aakritixyz.github.io/repo-name/)'
+  repo_path <- trimws(dt$viz_owner_repo[i])
+  demo_url <- paste0("https://", gsub("/.*", "", repo_path), ".github.io/", gsub(".*/", "", repo_path), "/")
+  
+  cat('<tr style="border-bottom: 1px solid #ddd;">')
+  # We use raw <img> tag. If it still shows brackets, we will know Pandoc is the enemy.
+  cat(paste(
+    '<td><img src="', img_url, '" width="250"></td>',
+    '<td><strong style="font-size: 18px;">', dt$title[i], '</strong></td>',
+    '<td><a href="', demo_url, '" style="font-weight:bold;">Interactive Demo</a><br><br>',
+    '<a href="', dt$source[i], '">Source Code</a></td>'
+  ))
   cat('</tr>')
 }
-
-cat('</tbody></table>')
+cat('</table>')
