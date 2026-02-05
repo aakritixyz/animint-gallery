@@ -9,7 +9,7 @@ output:
 ## My Interactive Visualizations Portfolio
 
 ```{r echo=FALSE, results='asis'}
-# The 7 repos we are targeting
+# Using your EXACT repo names from the screenshot
 repos <- c(
   "ten-points-animint", 
   "iris-animint-test", 
@@ -27,17 +27,18 @@ for(repo in repos){
   demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/")
   code_url <- paste0("[https://github.com/aakritixyz/](https://github.com/aakritixyz/)", repo)
   
-  # This points to the Capture.PNG we just verified
+  # Absolute URL to the image on the main branch
   img_url  <- paste0("[https://raw.githubusercontent.com/aakritixyz/](https://raw.githubusercontent.com/aakritixyz/)", repo, "/main/Capture.PNG")
   
-  # The HTML for the image cell
-  img_tag <- paste0("<a href='", demo_url, "'><img src='", img_url, "' width='250' style='border:1px solid #ddd; border-radius:8px; padding:5px;' alt='Viz Screenshot'></a>")
+  # Image tag with fixed width and no 'onerror' to keep it simple for now
+  img_tag <- paste0("<a href='", demo_url, "'><img src='", img_url, "' width='250' style='border:1px solid #ddd; border-radius:8px;'></a>")
   
-  # Clean up the name (e.g., 'iris-animint-test' becomes 'Iris')
+  # Clean up name: remove suffixes and capitalize
   proj_name <- gsub("-animint|-test", "", repo)
   proj_name <- tools::toTitleCase(gsub("-", " ", proj_name))
   
   links <- paste0("<strong>[View Demo](", demo_url, ")</strong><br>[Source Code](", code_url, ")")
   
-  cat(paste0("| ", img_tag, " | ### ", proj_name, " | ", links, " |\n"))
+  # Removed the '###' from inside the table cell as it messes up Markdown tables
+  cat(paste0("| ", img_tag, " | **", proj_name, "** | ", links, " |\n"))
 }
