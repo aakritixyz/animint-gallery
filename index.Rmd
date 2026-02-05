@@ -3,39 +3,14 @@ title: "Aakriti's Animint Gallery"
 output: html_document
 ---
 
-```{r echo=FALSE, results='asis'}
-# --- CONFIGURATION ---
-user <- "aakritixyz"
-repos <- c(
-  "ten-points-animint", "iris-animint-test", "worldbank-animint-test", 
-  "kmeans-animint-test", "mc-sample-mean-test", "buffon-needle-test", 
-  "rosling-bubbles-test"
-)
+## My Interactive Visualizations
 
-# --- THE AUTOMATED LOOP ---
-cat('<table style="width:100%; border-collapse: collapse;">')
-cat('<thead><tr style="background-color: #eee;"><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>')
-
-for(repo in repos){
-  # We split the "https" part to trick the Pandoc parser into not adding brackets
-  protocol <- "https"
-  colon_slashes <- "://"
-  
-  img  <- paste0(protocol, colon_slashes, "[raw.githubusercontent.com/](https://raw.githubusercontent.com/)", user, "/", repo, "/main/Capture.PNG")
-  demo <- paste0(protocol, colon_slashes, user, ".github.io/", repo, "/")
-  code <- paste0(protocol, colon_slashes, "[github.com/](https://github.com/)", user, "/", repo)
-  
-  name <- toupper(gsub("-animint|-test", "", repo))
-
-  # Build the row as a single string
-  row <- paste0(
-    "<tr>",
-    "<td style='padding:10px; border:1px solid #ddd;'><img src='", img, "' width='200'></td>",
-    "<td style='padding:10px; border:1px solid #ddd;'><b>", name, "</b></td>",
-    "<td style='padding:10px; border:1px solid #ddd;'><a href='", demo, "'>View Demo</a><br><a href='", code, "'>Source Code</a></td>",
-    "</tr>"
-  )
-  cat(row)
-}
-
-cat('</tbody></table>')
+| Screenshot | Project | Links |
+|:---:|:---|:---|
+| <img src="https://raw.githubusercontent.com/aakritixyz/ten-points-animint/main/Capture.PNG" width="200"> | **TEN POINTS** | [Demo](https://aakritixyz.github.io/ten-points-animint/) <br> [Source](https://github.com/aakritixyz/ten-points-animint) |
+| <img src="https://raw.githubusercontent.com/aakritixyz/iris-animint-test/main/Capture.PNG" width="200"> | **IRIS** | [Demo](https://aakritixyz.github.io/iris-animint-test/) <br> [Source](https://github.com/aakritixyz/iris-animint-test) |
+| <img src="https://raw.githubusercontent.com/aakritixyz/worldbank-animint-test/main/Capture.PNG" width="200"> | **WORLDBANK** | [Demo](https://aakritixyz.github.io/worldbank-animint-test/) <br> [Source](https://github.com/aakritixyz/worldbank-animint-test) |
+| <img src="https://raw.githubusercontent.com/aakritixyz/kmeans-animint-test/main/Capture.PNG" width="200"> | **KMEANS** | [Demo](https://aakritixyz.github.io/kmeans-animint-test/) <br> [Source](https://github.com/aakritixyz/kmeans-animint-test) |
+| <img src="https://raw.githubusercontent.com/aakritixyz/mc-sample-mean-test/main/Capture.PNG" width="200"> | **MC SAMPLE MEAN** | [Demo](https://aakritixyz.github.io/mc-sample-mean-test/) <br> [Source](https://github.com/aakritixyz/mc-sample-mean-test) |
+| <img src="https://raw.githubusercontent.com/aakritixyz/buffon-needle-test/main/Capture.PNG" width="200"> | **BUFFON NEEDLE** | [Demo](https://aakritixyz.github.io/buffon-needle-test/) <br> [Source](https://github.com/aakritixyz/buffon-needle-test) |
+| <img src="https://raw.githubusercontent.com/aakritixyz/rosling-bubbles-test/main/Capture.PNG" width="200"> | **ROSLING BUBBLES** | [Demo](https://aakritixyz.github.io/rosling-bubbles-test/) <br> [Source](https://github.com/aakritixyz/rosling-bubbles-test) |
