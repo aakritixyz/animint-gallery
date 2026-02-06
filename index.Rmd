@@ -3,33 +3,61 @@ title: "Aakriti's Animint Gallery"
 output: 
   html_document:
     self_contained: false
+    theme: cosmo
 ---
 
 ```{r, echo=FALSE, results='asis'}
+# 1. Read the data
 dt <- read.csv('meta.csv', stringsAsFactors = FALSE)
 
-cat('<table class="table"><thead><tr><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>')
+cat('<table class="table" style="width:100%;">')
+cat('<thead>
+      <tr>
+        <th>Screenshot</th>
+        <th>Repo Name</th>
+        <th>Project Title</th>
+        <th>Last Updated</th>
+      </tr>
+    </thead><tbody>')
 
 for(i in 1:nrow(dt)){
-  repo <- gsub("aakritixyz/", "", trimws(dt$viz_owner_repo[i]))
+  # Clean up strings
+  repo_full <- trimws(dt$viz_owner_repo[i])
+  repo_name <- gsub("aakritixyz/", "", repo_full)
   
-  # We construct the URL components separately
-  base <- "[https://aakritixyz.github.io/](https://aakritixyz.github.io/)"
-  img_path <- paste0(repo, "/Capture.PNG")
-  demo_url <- paste0(base, repo, "/")
+  # Construct URLs - Using timestamp to force-refresh images
+  timestamp <- as.numeric(Sys.time())
+  public_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo_name, "/")
+  img_url <- paste0(public_url, "Capture.PNG?v=", timestamp)
   
   cat('<tr>')
   
-  # TECHNICAL TRICK: 
-  # We break the "https://" string so Pandoc's parser doesn't catch it.
-  # We use the HTML entity for the colon (&#58;) and slashes (&#47;)
-  safe_url <- paste0("https&#58;&#47;&#47;aakritixyz.github.io&#47;", img_path)
+  # Column 1: Screenshot (Linked to Demo)
+  cat('<td>')
+  cat(paste0('<a href="', public_url, '">'))
+  cat(paste0('<img src="', img_url, '" width="300" style="border:1px solid #ddd; border-radius:4px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1);">'))
+  cat('</a></td>')
   
-  cat('<td><img src="', safe_url, '" width="250" style="border:1px solid #eee;"></td>', sep="")
-  cat('<td><b>', dt$title[i], '</b></td>', sep="")
-  cat('<td><a href="', demo_url, '">Interactive Demo</a></td>', sep="")
+  # Column 2: Repo Name (Monospace font for code feel)
+  cat('<td style="vertical-align: middle; font-family: monospace;">')
+  cat(paste0('<a href="', public_url, '">', repo_name, '.viz</a>'))
+  cat('</td>')
+  
+  # Column 3: Project Title
+  cat('<td style="vertical-align: middle;">')
+  cat(paste0('<b>', trimws(dt$title[i]), '</b>'))
+  cat('</td>')
+  
+  # Column 4: Timestamp (Mirroring the ISO format in your screenshot)
+  cat('<td style="vertical-align: middle; color: #666; font-size: 0.85em;">')
+  cat(paste0(format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ")))
+  cat('</td>')
   
   cat('</tr>')
 }
 
 cat('</tbody></table>')
+
+cat('<br><hr>')
+cat('<h3>Source Code</h3>')
+cat('<ul><li><a href="[https://github.com/aakritixyz/animint-gallery](https://github.com/aakritixyz/animint-gallery)">Repository of this gallery</a></li></ul>')
