@@ -10,11 +10,12 @@ output:
 # 1. Read the data
 dt <- read.csv('meta.csv', stringsAsFactors = FALSE)
 
-# 2. Start Table with columns matching the screenshot
+# 2. Start Table with columns matching the GSoC requirements
 cat('<table class="table" style="width:100%;">')
 cat('<thead><tr>
       <th>Screenshot</th>
       <th>Repo Name</th>
+      <th>Visualization</th>
       <th>Project Title</th>
       <th>Last Updated</th>
     </tr></thead><tbody>')
@@ -22,29 +23,32 @@ cat('<thead><tr>
 for(i in 1:nrow(dt)){
   repo <- gsub("aakritixyz/", "", trimws(dt$viz_owner_repo[i]))
   
-  # YOUR WORKING TECHNICAL TRICK:
-  # Using HTML entities so Pandoc doesn't corrupt the image source URL
-  safe_img_url <- paste0("https&#58;&#47;&#47;aakritixyz.github.io&#47;", repo, "&#47;Capture.PNG")
-  
-  # Standard demo URL
-  demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/")
+  # YOUR WORKING LINK LOGIC
+  img_url <- paste0("https://", "aakritixyz.github.io/", repo, "/Capture.PNG")
+  demo_url <- paste0("https://", "aakritixyz.github.io/", repo, "/")
+  source_url <- trimws(dt$source[i])
   
   cat('<tr>')
   
-  # Column 1: Screenshot (Using your safe_url trick)
+  # Column 1: Screenshot (Linked to Demo)
   cat('<td><a href="', demo_url, '">', sep="")
-  cat('<img src="', safe_img_url, '" width="300" style="border:1px solid #ddd; border-radius:4px;">', sep="")
+  cat('<img src="', img_url, '" width="250" style="border:1px solid #ddd; border-radius:4px;">', sep="")
   cat('</a></td>')
   
-  # Column 2: Repo Name (.viz style)
+  # Column 2: Repo Name (Linked to GitHub Source)
   cat('<td style="vertical-align: middle; font-family: monospace;">')
-  cat('<a href="', demo_url, '">', repo, '.viz</a>', sep="")
+  cat('<a href="', source_url, '" target="_blank">', repo, '</a>', sep="")
   cat('</td>')
   
-  # Column 3: Project Title
+  # Column 3: Visualization (Dedicated Demo Button)
+  cat('<td style="vertical-align: middle;">')
+  cat('<a href="', demo_url, '" class="btn btn-sm btn-success" target="_blank">Interactive Demo</a>', sep="")
+  cat('</td>')
+  
+  # Column 4: Project Title
   cat('<td style="vertical-align: middle;"><b>', dt$title[i], '</b></td>', sep="")
   
-  # Column 4: Timestamp (ISO Format like Suhaani's)
+  # Column 5: Last Updated
   cat('<td style="vertical-align: middle; color: #666; font-size: 0.85em;">')
   cat(format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"))
   cat('</td>')
