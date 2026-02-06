@@ -11,21 +11,17 @@ dt <- read.csv('meta.csv', stringsAsFactors = FALSE)
 cat('<table class="table"><thead><tr><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>')
 
 for(i in 1:nrow(dt)){
-  repo_path <- trimws(dt$viz_owner_repo[i])
+  repo_path <- gsub("[[:space:]]", "", dt$viz_owner_repo[i])
   repo_only <- gsub("aakritixyz/", "", repo_path)
   
-  # TRICK: We split the URL so Pandoc's "autolink" filter doesn't catch it
-  proto <- "https"
-  domain <- "aakritixyz.github.io"
-  
-  img_src <- paste0(proto, "://", domain, "/", repo_only, "/Capture.PNG")
-  demo_url <- paste0(proto, "://", domain, "/", repo_only, "/")
+  # We use FIXME instead of https to hide the URL from Pandoc's bracket-bot
+  img_url <- paste0("FIXME://aakritixyz.github.io/", repo_only, "/Capture.PNG")
+  demo_url <- paste0("FIXME://aakritixyz.github.io/", repo_only, "/")
 
   cat('<tr>')
-  # We use HTML entities for the brackets to stop Pandoc from parsing
-  cat(paste0('<td><img src="', img_src, '" width="250"></td>'))
-  cat(paste0('<td><b>', dt$title[i], '</b></td>'))
-  cat(paste0('<td><a href="', demo_url, '">Interactive Demo</a><br><a href="', dt$source[i], '">Source Code</a></td>'))
+  cat(sprintf('<td><img class="gallery-img" data-src="%s" width="250"></td>', img_url))
+  cat(sprintf('<td><b>%s</b></td>', dt$title[i]))
+  cat(sprintf('<td><a class="gallery-link" href="%s">Interactive Demo</a></td>', demo_url))
   cat('</tr>')
 }
 cat('</tbody></table>')
