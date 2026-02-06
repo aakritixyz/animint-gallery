@@ -10,47 +10,43 @@ output:
 # 1. Read the data
 dt <- read.csv('meta.csv', stringsAsFactors = FALSE)
 
+# 2. Start Table with columns matching the screenshot
 cat('<table class="table" style="width:100%;">')
-cat('<thead>
-      <tr>
-        <th>Screenshot</th>
-        <th>Repo Name</th>
-        <th>Project Title</th>
-        <th>Last Updated</th>
-      </tr>
-    </thead><tbody>')
+cat('<thead><tr>
+      <th>Screenshot</th>
+      <th>Repo Name</th>
+      <th>Project Title</th>
+      <th>Last Updated</th>
+    </tr></thead><tbody>')
 
 for(i in 1:nrow(dt)){
-  # Clean up strings
-  repo_full <- trimws(dt$viz_owner_repo[i])
-  repo_name <- gsub("aakritixyz/", "", repo_full)
+  repo <- gsub("aakritixyz/", "", trimws(dt$viz_owner_repo[i]))
   
-  # Construct URLs - Using timestamp to force-refresh images
-  timestamp <- as.numeric(Sys.time())
-  public_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo_name, "/")
-  img_url <- paste0(public_url, "Capture.PNG?v=", timestamp)
+  # YOUR WORKING TECHNICAL TRICK:
+  # Using HTML entities so Pandoc doesn't corrupt the image source URL
+  safe_img_url <- paste0("https&#58;&#47;&#47;aakritixyz.github.io&#47;", repo, "&#47;Capture.PNG")
+  
+  # Standard demo URL
+  demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/")
   
   cat('<tr>')
   
-  # Column 1: Screenshot (Linked to Demo)
-  cat('<td>')
-  cat(paste0('<a href="', public_url, '">'))
-  cat(paste0('<img src="', img_url, '" width="300" style="border:1px solid #ddd; border-radius:4px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1);">'))
+  # Column 1: Screenshot (Using your safe_url trick)
+  cat('<td><a href="', demo_url, '">', sep="")
+  cat('<img src="', safe_img_url, '" width="300" style="border:1px solid #ddd; border-radius:4px;">', sep="")
   cat('</a></td>')
   
-  # Column 2: Repo Name (Monospace font for code feel)
+  # Column 2: Repo Name (.viz style)
   cat('<td style="vertical-align: middle; font-family: monospace;">')
-  cat(paste0('<a href="', public_url, '">', repo_name, '.viz</a>'))
+  cat('<a href="', demo_url, '">', repo, '.viz</a>', sep="")
   cat('</td>')
   
   # Column 3: Project Title
-  cat('<td style="vertical-align: middle;">')
-  cat(paste0('<b>', trimws(dt$title[i]), '</b>'))
-  cat('</td>')
+  cat('<td style="vertical-align: middle;"><b>', dt$title[i], '</b></td>', sep="")
   
-  # Column 4: Timestamp (Mirroring the ISO format in your screenshot)
+  # Column 4: Timestamp (ISO Format like Suhaani's)
   cat('<td style="vertical-align: middle; color: #666; font-size: 0.85em;">')
-  cat(paste0(format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ")))
+  cat(format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"))
   cat('</td>')
   
   cat('</tr>')
@@ -58,6 +54,5 @@ for(i in 1:nrow(dt)){
 
 cat('</tbody></table>')
 
-cat('<br><hr>')
-cat('<h3>Source Code</h3>')
+cat('<br><hr><h3>Source Code</h3>')
 cat('<ul><li><a href="[https://github.com/aakritixyz/animint-gallery](https://github.com/aakritixyz/animint-gallery)">Repository of this gallery</a></li></ul>')
