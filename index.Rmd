@@ -9,28 +9,32 @@ output:
 # 1. Read the data
 dt <- read.csv('meta.csv', stringsAsFactors = FALSE)
 
-# 2. Build the table header
-cat('<table class="table" style="width:100%;">')
-cat('<tr><th>Screenshot</th><th>Project</th><th>Links</th></tr>')
+# 2. Write the Table Header manually
+cat('<table style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif;">')
+cat('<tr style="background-color: #f2f2f2; text-align: left;">
+      <th style="padding: 12px; border: 1px solid #ddd;">Screenshot</th>
+      <th style="padding: 12px; border: 1px solid #ddd;">Project</th>
+      <th style="padding: 12px; border: 1px solid #ddd;">Links</th>
+    </tr>')
 
-# 3. Loop through and force RAW HTML
+# 3. Loop through rows
 for(i in 1:nrow(dt)){
-  # Clean the path
   repo_path <- trimws(dt$viz_owner_repo[i])
-  
-  # Image URL (using the 200 OK link we verified)
   img_url <- paste0("[https://cdn.jsdelivr.net/gh/](https://cdn.jsdelivr.net/gh/)", repo_path, "@main/Capture.PNG")
   
-  # Demo URL (rebuilt to avoid 404)
+  # Build Demo link
   user <- gsub("/.*", "", repo_path)
   repo <- gsub(".*/", "", repo_path)
   demo_url <- paste0("https://", user, ".github.io/", repo, "/")
   
-  # WRITE RAW HTML ROWS
   cat('<tr>')
-  cat(paste0('<td><img src="', img_url, '" width="250" style="display:block;"></td>'))
-  cat(paste0('<td><strong>', dt$title[i], '</strong></td>'))
-  cat(paste0('<td><a href="', demo_url, '">Interactive Demo</a><br><a href="', dt$source[i], '">Source Code</a></td>'))
+  # Raw <img> tag without R's help - this prevents the brackets!
+  cat(paste0('<td style="padding: 12px; border: 1px solid #ddd;"><img src="', img_url, '" width="250" alt="Viz Screenshot"></td>'))
+  cat(paste0('<td style="padding: 12px; border: 1px solid #ddd;"><b>', dt$title[i], '</b></td>'))
+  cat(paste0('<td style="padding: 12px; border: 1px solid #ddd;">
+              <a href="', demo_url, '" target="_blank">Interactive Demo</a><br><br>
+              <a href="', dt$source[i], '" target="_blank">Source Code</a>
+            </td>'))
   cat('</tr>')
 }
 cat('</table>')
