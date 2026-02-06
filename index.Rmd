@@ -3,29 +3,26 @@ title: "Aakriti's Animint Gallery"
 output: 
   html_document:
     self_contained: false
-    embed_resources: false
 ---
 
 ```{r, echo=FALSE, results='asis'}
 # 1. Read the data
 dt <- read.csv('meta.csv', stringsAsFactors = FALSE)
 
-# 2. Manual Table Header
 cat('<table class="table"><thead><tr><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>')
 
-# 3. The Loop - Using HTML only
 for(i in 1:nrow(dt)){
-  repo <- trimws(dt$viz_owner_repo[i])
-  # We use JSDelivr but we break the string so Pandoc doesn't 'auto-link' it
-  img_src <- paste0("[https://cdn.jsdelivr.net/gh/](https://cdn.jsdelivr.net/gh/)", repo, "@main/Capture.PNG")
+  repo_path <- trimws(dt$viz_owner_repo[i])
   
-  # Demo Link
-  user_repo <- strsplit(repo, "/")[[1]]
-  demo_url <- paste0("https://", user_repo[1], ".github.io/", user_repo[2], "/")
+  # Logic: If repo is 'aakritixyz/ten-points-animint'
+  # The image is at '[https://aakritixyz.github.io/ten-points-animint/Capture.PNG](https://aakritixyz.github.io/ten-points-animint/Capture.PNG)'
+  repo_only <- gsub("aakritixyz/", "", repo_path)
+  img_src <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo_only, "/Capture.PNG")
+  demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo_only, "/")
 
   cat('<tr>')
-  # We use a trick: adding a dummy attribute so Pandoc ignores the src
-  cat(paste0('<td><img src="', img_src, '" width="250" data-ignore="1"></td>'))
+  # Added an 'onerror' to try lowercase if Uppercase fails
+  cat(paste0('<td><img src="', img_src, '" width="250" onerror="this.src=\'', tolower(img_src), '\'"></td>'))
   cat(paste0('<td><b>', dt$title[i], '</b></td>'))
   cat(paste0('<td><a href="', demo_url, '">Demo</a><br><a href="', dt$source[i], '">Source</a></td>'))
   cat('</tr>')
