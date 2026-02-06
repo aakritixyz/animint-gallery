@@ -3,26 +3,52 @@ title: "Aakriti's Animint Gallery"
 output: 
   html_document:
     self_contained: false
+    theme: cosmo
 ---
 
 ```{r, echo=FALSE, results='asis'}
+# 1. Read the data
 dt <- read.csv('meta.csv', stringsAsFactors = FALSE)
 
-cat('<table class="table"><thead><tr><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>')
+# 2. Clean up whitespace to prevent URL breaks
+dt$viz_owner_repo <- trimws(dt$viz_owner_repo)
+dt$title <- trimws(dt$title)
+
+cat('<h2>Interactive Visualization Gallery</h2>')
+cat('<hr>')
+cat('<table class="table" style="width:100%;">')
+cat('<thead><tr><th style="width:300px;">Screenshot</th><th>Project Details</th></tr></thead>')
+cat('<tbody>')
 
 for(i in 1:nrow(dt)){
-  repo_path <- gsub("[[:space:]]", "", dt$viz_owner_repo[i])
-  repo_only <- gsub("aakritixyz/", "", repo_path)
+  # Extract repo name (removes the 'aakritixyz/' prefix)
+  repo <- gsub("aakritixyz/", "", dt$viz_owner_repo[i])
   
-  # Using 'H-T-T-P-S' to keep Pandoc from recognizing it as a link
-  img_url <- paste0("HTTPS-FIX://aakritixyz.github.io/", repo_only, "/Capture.PNG")
-  demo_url <- paste0("HTTPS-FIX://aakritixyz.github.io/", repo_only, "/")
-
+  # Construct the absolute URL to the image in the ROOT of the repo
+  # We add a timestamp (?t=) to force GitHub to bypass old 404 caches
+  timestamp <- as.numeric(Sys.time())
+  img_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/Capture.PNG?t=", timestamp)
+  demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/")
+  
   cat('<tr>')
-  # We provide a dummy src so the element is 'real' to the browser
-  cat(sprintf('<td><img class="gallery-img" src="about:blank" data-url="%s" width="250" style="border:1px solid #eee;"></td>', img_url))
-  cat(sprintf('<td><b>%s</b></td>', dt$title[i]))
-  cat(sprintf('<td><a class="gallery-link" href="#" data-href="%s">Interactive Demo</a><br><a href="%s">Source</a></td>', demo_url, dt$source[i]))
+  
+  # Image Cell: Using a fallback to 'capture.png' (lowercase) just in case
+  cat('<td>')
+  cat(paste0('<a href="', demo_url, '">'))
+  cat(paste0('<img src="', img_url, '" '))
+  cat(paste0('onerror="this.onerror=null; this.src=\'[https://aakritixyz.github.io/](https://aakritixyz.github.io/)', repo, '/capture.png\';" '))
+  cat('width="280" style="border:2px solid #ddd; border-radius:4px; padding:5px;">')
+  cat('</a>')
+  cat('</td>')
+  
+  # Details Cell
+  cat('<td style="vertical-align: middle;">')
+  cat(paste0('<h3>', dt$title[i], '</h3>'))
+  cat(paste0('<p><a class="btn btn-primary" href="', demo_url, '" target="_blank">View Interactive Demo</a></p>'))
+  cat(paste0('<p><a href="', dt$source[i], '" target="_blank">View Source Code on GitHub</a></p>'))
+  cat('</td>')
+  
   cat('</tr>')
 }
+
 cat('</tbody></table>')
