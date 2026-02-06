@@ -14,14 +14,15 @@ for(i in 1:nrow(dt)){
   repo_path <- gsub("[[:space:]]", "", dt$viz_owner_repo[i])
   repo_only <- gsub("aakritixyz/", "", repo_path)
   
-  # We use FIXME instead of https to hide the URL from Pandoc's bracket-bot
-  img_url <- paste0("FIXME://aakritixyz.github.io/", repo_only, "/Capture.PNG")
-  demo_url <- paste0("FIXME://aakritixyz.github.io/", repo_only, "/")
+  # Using 'H-T-T-P-S' to keep Pandoc from recognizing it as a link
+  img_url <- paste0("HTTPS-FIX://aakritixyz.github.io/", repo_only, "/Capture.PNG")
+  demo_url <- paste0("HTTPS-FIX://aakritixyz.github.io/", repo_only, "/")
 
   cat('<tr>')
-  cat(sprintf('<td><img class="gallery-img" data-src="%s" width="250"></td>', img_url))
+  # We provide a dummy src so the element is 'real' to the browser
+  cat(sprintf('<td><img class="gallery-img" src="about:blank" data-url="%s" width="250" style="border:1px solid #eee;"></td>', img_url))
   cat(sprintf('<td><b>%s</b></td>', dt$title[i]))
-  cat(sprintf('<td><a class="gallery-link" href="%s">Interactive Demo</a></td>', demo_url))
+  cat(sprintf('<td><a class="gallery-link" href="#" data-href="%s">Interactive Demo</a><br><a href="%s">Source</a></td>', demo_url, dt$source[i]))
   cat('</tr>')
 }
 cat('</tbody></table>')
