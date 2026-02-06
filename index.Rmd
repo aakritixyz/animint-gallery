@@ -3,50 +3,31 @@ title: "Aakriti's Animint Gallery"
 output: 
   html_document:
     self_contained: false
-    theme: cosmo
 ---
 
 ```{r, echo=FALSE, results='asis'}
-# 1. Read the data
 dt <- read.csv('meta.csv', stringsAsFactors = FALSE)
 
-# 2. Clean up whitespace to prevent URL breaks
-dt$viz_owner_repo <- trimws(dt$viz_owner_repo)
-dt$title <- trimws(dt$title)
-
-cat('<h2>Interactive Visualization Gallery</h2>')
-cat('<hr>')
-cat('<table class="table" style="width:100%;">')
-cat('<thead><tr><th style="width:300px;">Screenshot</th><th>Project Details</th></tr></thead>')
-cat('<tbody>')
+cat('<table class="table"><thead><tr><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>')
 
 for(i in 1:nrow(dt)){
-  # Extract repo name (removes the 'aakritixyz/' prefix)
-  repo <- gsub("aakritixyz/", "", dt$viz_owner_repo[i])
+  repo <- gsub("aakritixyz/", "", trimws(dt$viz_owner_repo[i]))
   
-  # Construct the absolute URL to the image in the ROOT of the repo
-  # We add a timestamp (?t=) to force GitHub to bypass old 404 caches
-  timestamp <- as.numeric(Sys.time())
-  img_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/Capture.PNG?t=", timestamp)
-  demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo, "/")
+  # We construct the URL components separately
+  base <- "[https://aakritixyz.github.io/](https://aakritixyz.github.io/)"
+  img_path <- paste0(repo, "/Capture.PNG")
+  demo_url <- paste0(base, repo, "/")
   
   cat('<tr>')
   
-  # Image Cell: Using a fallback to 'capture.png' (lowercase) just in case
-  cat('<td>')
-  cat(paste0('<a href="', demo_url, '">'))
-  cat(paste0('<img src="', img_url, '" '))
-  cat(paste0('onerror="this.onerror=null; this.src=\'[https://aakritixyz.github.io/](https://aakritixyz.github.io/)', repo, '/capture.png\';" '))
-  cat('width="280" style="border:2px solid #ddd; border-radius:4px; padding:5px;">')
-  cat('</a>')
-  cat('</td>')
+  # TECHNICAL TRICK: 
+  # We break the "https://" string so Pandoc's parser doesn't catch it.
+  # We use the HTML entity for the colon (&#58;) and slashes (&#47;)
+  safe_url <- paste0("https&#58;&#47;&#47;aakritixyz.github.io&#47;", img_path)
   
-  # Details Cell
-  cat('<td style="vertical-align: middle;">')
-  cat(paste0('<h3>', dt$title[i], '</h3>'))
-  cat(paste0('<p><a class="btn btn-primary" href="', demo_url, '" target="_blank">View Interactive Demo</a></p>'))
-  cat(paste0('<p><a href="', dt$source[i], '" target="_blank">View Source Code on GitHub</a></p>'))
-  cat('</td>')
+  cat('<td><img src="', safe_url, '" width="250" style="border:1px solid #eee;"></td>', sep="")
+  cat('<td><b>', dt$title[i], '</b></td>', sep="")
+  cat('<td><a href="', demo_url, '">Interactive Demo</a></td>', sep="")
   
   cat('</tr>')
 }
