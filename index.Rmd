@@ -6,7 +6,6 @@ output:
 ---
 
 ```{r, echo=FALSE, results='asis'}
-# 1. Read the data
 dt <- read.csv('meta.csv', stringsAsFactors = FALSE)
 
 cat('<table class="table"><thead><tr><th>Screenshot</th><th>Project</th><th>Links</th></tr></thead><tbody>')
@@ -15,14 +14,17 @@ for(i in 1:nrow(dt)){
   repo_path <- trimws(dt$viz_owner_repo[i])
   repo_only <- gsub("aakritixyz/", "", repo_path)
   
-  # The secret: We use // instead of https:// to force the browser to treat it as a full URL
-  img_src <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo_only, "/Capture.PNG")
-  demo_url <- paste0("[https://aakritixyz.github.io/](https://aakritixyz.github.io/)", repo_only, "/")
+  # TRICK: We split the URL so Pandoc's "autolink" filter doesn't catch it
+  proto <- "https"
+  domain <- "aakritixyz.github.io"
+  
+  img_src <- paste0(proto, "://", domain, "/", repo_only, "/Capture.PNG")
+  demo_url <- paste0(proto, "://", domain, "/", repo_only, "/")
 
   cat('<tr>')
-  # We use a pure HTML string here to bypass R's processing
-  cat(paste0('<td><img src="', img_src, '" width="250" style="display:block" border="0"></td>'))
-  cat(paste0('<td><b style="font-size:16px;">', dt$title[i], '</b></td>'))
+  # We use HTML entities for the brackets to stop Pandoc from parsing
+  cat(paste0('<td><img src="', img_src, '" width="250"></td>'))
+  cat(paste0('<td><b>', dt$title[i], '</b></td>'))
   cat(paste0('<td><a href="', demo_url, '">Interactive Demo</a><br><a href="', dt$source[i], '">Source Code</a></td>'))
   cat('</tr>')
 }
